@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anti-Phishing API Tester</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .endpoint-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .endpoint-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .endpoint-title {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .endpoint-badge {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        textarea,
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .example-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .example-btn {
+            background: #e0e0e0;
+            color: #333;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .example-btn:hover {
+            background: #d0d0d0;
+        }
+
+        .icon {
+            font-size: 1.5em;
+        }
+
+        /* POPUP/MODAL STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { 
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 0;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+
+        .close-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(80vh - 150px);
+        }
+
+        .risk-display {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .risk-score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .risk-low {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .risk-medium {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .risk-high {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .risk-level-text {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .threat-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .threat-badge {
+            background: #dc3545;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .explanation-text {
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .json-output {
+            background: #282c34;
+            color: #61dafb;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .loading-modal {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 1.2em;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .error-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Anti-Phishing API Tester</h1>
+
+        <!-- Health Check -->
+        <div class="endpoint-card">
+            <h2 class="endpoint-title">
+                <span class="icon"></span>
+                Health Check
+                <span class="endpoint-badge">GET</span>
+            </h2>
+            <button onclick="checkHealth()">Check API Health</button>
+        </div>
+
+        <!-- Text Analysis -->
+        <div class="endpoint-card">
+            <h2 class="endpoint-title">
+                <span class="icon"></span>
+                Text Analysis
+                <span class="endpoint-badge">POST</span>
+            </h2>
+            <div class="example-buttons">
+                <button class="example-btn" onclick="fillTextExample('phishing')">Phishing Example</button>
+                <button class="example-btn" onclick="fillTextExample('legitimate')">Legitimate Example</button>
+                <button class="example-btn" onclick="fillTextExample('suspicious')">Suspicious Example</button>
+            </div>
+            <div class="form-group">
+                <label for="text-input">Enter text to analyze:</label>
+                <textarea id="text-input" placeholder="Enter suspicious text, email, or message..."></textarea>
+            </div>
+            <button onclick="analyzeText()">Analyze Text</button>
+        </div>
+
+        <!-- Image Analysis -->
+        <div class="endpoint-card">
+            <h2 class="endpoint-title">
+                <span class="icon"></span>
+                Image Analysis
+                <span class="endpoint-badge">POST</span>
+            </h2>
+            <div class="form-group">
+                <label for="image-input">Upload image file:</label>
+                <input type="file" id="image-input" accept="image/*">
+            </div>
+            <button onclick="analyzeImage()">Analyze Image</button>
+        </div>
+
+        <!-- Video Analysis -->
+        <div class="endpoint-card">
+            <h2 class="endpoint-title">
+                <span class="icon"></span>
+                Video Analysis
+                <span class="endpoint-badge">POST</span>
+            </h2>
+            <div class="form-group">
+                <label for="video-input">Upload video file:</label>
+                <input type="file" id="video-input" accept="video/*">
+            </div>
+            <button onclick="analyzeVideo()">Analyze Video</button>
+        </div>
+
+        <!-- Audio Analysis -->
+        <div class="endpoint-card">
+            <h2 class="endpoint-title">
+                <span class="icon">🔊</span>
+                Audio Analysis
+                <span class="endpoint-badge">POST</span>
+            </h2>
+            <div class="form-group">
+                <label for="audio-input">Upload audio file:</label>
+                <input type="file" id="audio-input" accept="audio/*">
+            </div>
+            <button onclick="analyzeAudio()">Analyze Audio</button>
+        </div>
+
+        <!-- File Analysis -->
+        <div class="endpoint-card">
+            <h2 class="endpoint-title">
+                <span class="icon"></span>
+                File Analysis
+                <span class="endpoint-badge">POST</span>
+            </h2>
+            <div class="form-group">
+                <label for="file-input">Upload any file:</label>
+                <input type="file" id="file-input">
+            </div>
+            <button onclick="analyzeFile()">Analyze File</button>
+        </div>
+    </div>
+
+    <!-- Modal/Popup -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Analysis Result</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://broskiiii-test.hf.space';
+
+        // Example texts
+        const examples = {
+            phishing: "URGENT! Your bank account has been suspended. Click here immediately to verify your identity: http://fake-bank.com/verify. You have 24 hours or your account will be permanently closed!",
+            legitimate: "Hi there! Just wanted to confirm our meeting scheduled for tomorrow at 2 PM in the main conference room. Please let me know if you need to reschedule.",
+            suspicious: "Congratulations! You've been selected to receive $10,000. To claim your prize, please provide your social security number and bank account details by replying to this message."
+        };
+
+        function fillTextExample(type) {
+            document.getElementById('text-input').value = examples[type];
+        }
+
+        function openModal(title) {
+            const modal = document.getElementById('resultModal');
+            document.getElementById('modalTitle').textContent = title;
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('resultModal');
+            modal.classList.remove('show');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('resultModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        function showLoading(title = 'Analyzing...') {
+            openModal(title);
+            document.getElementById('modalBody').innerHTML = `
+                <div class="loading-modal">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Processing your request...</div>
+                    <p style="color: #666; margin-top: 10px;">This may take a few seconds</p>
+                </div>
+            `;
+        }
+
+        function showResult(data, isError = false) {
+            const modalBody = document.getElementById('modalBody');
+            
+            if (isError) {
+                modalBody.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <div class="error-icon">❌</div>
+                        <div class="error-message">Error Occurred</div>
+                        <div class="info-section">
+                            <pre class="json-output">${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Success response with risk score
+            if (data.risk_score !== undefined) {
+                const riskPercent = (data.risk_score * 100).toFixed(0);
+                const riskClass = data.risk_score < 0.4 ? 'risk-low' : 
+                                 data.risk_score < 0.7 ? 'risk-medium' : 'risk-high';
+                const riskColor = data.risk_score < 0.4 ? '#28a745' : 
+                                 data.risk_score < 0.7 ? '#ffc107' : '#dc3545';
+                
+                let html = `
+                    <div class="risk-display">
+                        <div class="risk-score-circle ${riskClass}">
+                            ${riskPercent}%
+                        </div>
+                        <div class="risk-level-text" style="color: ${riskColor};">
+                            ${data.risk_level || 'Unknown'} Risk
+                        </div>
+                    </div>
+                `;
+
+                if (data.threat_types && data.threat_types.length > 0) {
+                    html += `
+                        <div class="info-section">
+                            <h3>🚨 Detected Threats</h3>
+                            <div class="threat-badges">
+                                ${data.threat_types.map(type => 
+                                    `<span class="threat-badge">${type}</span>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if (data.explanation) {
+                    html += `
+                        <div class="info-section">
+                            <h3>💡 Explanation</h3>
+                            <p class="explanation-text">${data.explanation}</p>
+                        </div>
+                    `;
+                }
+
+                html += `
+                    <div class="info-section">
+                        <h3>📋 Full Response</h3>
+                        <pre class="json-output">${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+
+                modalBody.innerHTML = html;
+            } else {
+                // Simple response (like health check)
+                modalBody.innerHTML = `
+                    <div class="info-section">
+                        <pre class="json-output">${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            }
+        }
+
+        // Health Check
+        async function checkHealth() {
+            showLoading('Health Check');
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                const data = await response.json();
+                document.getElementById('modalTitle').textContent = '✅ Health Check Result';
+                showResult(data);
+            } catch (error) {
+                document.getElementById('modalTitle').textContent = '❌ Health Check Failed';
+                showResult({ error: error.message }, true);
+            }
+        }
+
+        // Text Analysis
+        async function analyzeText() {
+            const text = document.getElementById('text-input').value;
+            
+            if (!text.trim()) {
+                alert('Please enter some text to analyze');
+                return;
+            }
+
+            showLoading('Text Analysis');
+            try {
+                const response = await fetch(`${API_BASE_URL}/analyze/text`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text })
+                });
+                
+                const data = await response.json();
+                document.getElementById('modalTitle').textContent = '📝 Text Analysis Result';
+                showResult(data, !response.ok);
+            } catch (error) {
+                document.getElementById('modalTitle').textContent = '❌ Analysis Failed';
+                showResult({ error: error.message }, true);
+            }
+        }
+
+        // Image Analysis
+        async function analyzeImage() {
+            const fileInput = document.getElementById('image-input');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select an image file');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            showLoading('Image Analysis');
+            try {
+                const response = await fetch(`${API_BASE_URL}/analyze/image`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                document.getElementById('modalTitle').textContent = '🖼️ Image Analysis Result';
+                showResult(data, !response.ok);
+            } catch (error) {
+                document.getElementById('modalTitle').textContent = '❌ Analysis Failed';
+                showResult({ error: error.message }, true);
+            }
+        }
+
+        // Video Analysis
+        async function analyzeVideo() {
+            const fileInput = document.getElementById('video-input');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a video file');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            showLoading('Video Analysis');
+            try {
+                const response = await fetch(`${API_BASE_URL}/analyze/video`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                document.getElementById('modalTitle').textContent = '🎥 Video Analysis Result';
+                showResult(data, !response.ok);
+            } catch (error) {
+                document.getElementById('modalTitle').textContent = '❌ Analysis Failed';
+                showResult({ error: error.message }, true);
+            }
+        }
+
+        // Audio Analysis
+        async function analyzeAudio() {
+            const fileInput = document.getElementById('audio-input');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select an audio file');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            showLoading('Audio Analysis');
+            try {
+                const response = await fetch(`${API_BASE_URL}/analyze/audio`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                document.getElementById('modalTitle').textContent = '🔊 Audio Analysis Result';
+                showResult(data, !response.ok);
+            } catch (error) {
+                document.getElementById('modalTitle').textContent = '❌ Analysis Failed';
+                showResult({ error: error.message }, true);
+            }
+        }
+
+        // File Analysis
+        async function analyzeFile() {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            showLoading('File Analysis');
+            try {
+                const response = await fetch(`${API_BASE_URL}/analyze/file`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                document.getElementById('modalTitle').textContent = '📄 File Analysis Result';
+                showResult(data, !response.ok);
+            } catch (error) {
+                document.getElementById('modalTitle').textContent = '❌ Analysis Failed';
+                showResult({ error: error.message }, true);
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

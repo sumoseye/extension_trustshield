@@ -1,0 +1,673 @@
+/* ===== Base Floating Container ===== */
+.trustshield-floating {
+  position: fixed;
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #fff;
+}
+
+/* ===== Action Buttons ===== */
+.trustshield-actions {
+  display: flex;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.95) 100%);
+  backdrop-filter: blur(12px);
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.trustshield-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.trustshield-btn:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+}
+
+.trustshield-btn-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  border-color: transparent;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+}
+
+.trustshield-btn-primary:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
+}
+
+/* ===== Audio Panel ===== */
+.trustshield-panel {
+  width: 320px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.95) 100%);
+  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.15);
+  overflow: hidden;
+}
+
+.trustshield-audio-panel {
+  width: 340px;
+}
+
+.trustshield-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.trustshield-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  color: #fff;
+}
+
+.trustshield-title svg {
+  color: #3b82f6;
+}
+
+.trustshield-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.trustshield-close:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.trustshield-body {
+  padding: 24px 20px;
+}
+
+/* ===== Audio Options (Not Recording) ===== */
+.trustshield-audio-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trustshield-btn-record,
+.trustshield-btn-upload {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.trustshield-btn-record {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border: none;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+}
+
+.trustshield-btn-record:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(239, 68, 68, 0.4);
+}
+
+.trustshield-btn-upload {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #60a5fa;
+}
+
+.trustshield-btn-upload:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateY(-2px);
+}
+
+.trustshield-btn-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.trustshield-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0;
+}
+
+.trustshield-divider::before,
+.trustshield-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.trustshield-divider span {
+  font-size: 12px;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.trustshield-audio-hint {
+  text-align: center;
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 8px;
+}
+
+/* ===== Recording State ===== */
+.trustshield-recording {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+/* Recording Visualizer */
+.trustshield-recording-visualizer {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(239, 68, 68, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.trustshield-recording-visualizer.paused {
+  background: rgba(234, 179, 8, 0.05);
+  border-color: rgba(234, 179, 8, 0.2);
+}
+
+.trustshield-wave-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 40px;
+}
+
+.trustshield-wave-bar {
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #ef4444 0%, #f87171 100%);
+  border-radius: 2px;
+  animation: wave 0.8s ease-in-out infinite;
+}
+
+.trustshield-recording-visualizer.paused .trustshield-wave-bar {
+  animation: none;
+  height: 20%;
+  background: #eab308;
+}
+
+@keyframes wave {
+  0%, 100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.trustshield-wave-bar:nth-child(1) { animation-delay: 0s; }
+.trustshield-wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.trustshield-wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.trustshield-wave-bar:nth-child(4) { animation-delay: 0.3s; }
+.trustshield-wave-bar:nth-child(5) { animation-delay: 0.4s; }
+
+/* Recording Timer */
+.trustshield-recording-timer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 30px;
+}
+
+.trustshield-recording-dot {
+  width: 12px;
+  height: 12px;
+  background: #ef4444;
+  border-radius: 50%;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.trustshield-recording-dot.paused {
+  background: #eab308;
+  animation: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.9); }
+}
+
+.trustshield-timer-text {
+  font-size: 24px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.trustshield-paused-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #eab308;
+  padding: 4px 8px;
+  background: rgba(234, 179, 8, 0.15);
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+/* Recording Control Buttons */
+.trustshield-recording-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.trustshield-control-btn {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.trustshield-control-btn.pause {
+  background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(234, 179, 8, 0.3);
+}
+
+.trustshield-control-btn.pause:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(234, 179, 8, 0.4);
+}
+
+.trustshield-control-btn.resume {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+}
+
+.trustshield-control-btn.resume:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(34, 197, 94, 0.4);
+}
+
+.trustshield-control-btn.stop {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: #fff;
+  box-shadow: 0 4px 25px rgba(59, 130, 246, 0.4);
+}
+
+.trustshield-control-btn.stop:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 30px rgba(59, 130, 246, 0.5);
+}
+
+.trustshield-control-btn.cancel {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+.trustshield-control-btn.cancel:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+  transform: scale(1.05);
+}
+
+.trustshield-recording-hint {
+  font-size: 12px;
+  color: #94a3b8;
+  text-align: center;
+}
+
+/* ===== Result Panel ===== */
+.trustshield-result-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  max-height: 90vh;
+  background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(59, 130, 246, 0.2);
+  z-index: 2147483647;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  animation: panelSlideIn 0.3s ease-out;
+}
+
+@keyframes panelSlideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.trustshield-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.15);
+}
+
+.trustshield-result-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.trustshield-result-logo svg {
+  color: #3b82f6;
+}
+
+.trustshield-accent {
+  color: #60a5fa;
+}
+
+.trustshield-result-close {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.trustshield-result-close:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+}
+
+.trustshield-result-content {
+  padding: 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* Mode Badge */
+.trustshield-mode-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 20px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.trustshield-mode-icon {
+  font-size: 14px;
+}
+
+/* Loading */
+.trustshield-result-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+  gap: 16px;
+}
+
+.trustshield-result-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(59, 130, 246, 0.2);
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.trustshield-result-loading p {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+/* Error */
+.trustshield-result-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  gap: 12px;
+  color: #f87171;
+  text-align: center;
+}
+
+.trustshield-result-error p {
+  font-size: 14px;
+}
+
+/* Risk Circle */
+.trustshield-risk-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.trustshield-risk-circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.trustshield-risk-value {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.trustshield-risk-level {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Sections */
+.trustshield-section {
+  padding: 14px;
+  background: rgba(30, 41, 59, 0.5);
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.trustshield-section h4 {
+  margin: 0 0 10px 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.trustshield-section p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #94a3b8;
+}
+
+.trustshield-verdict-section {
+  border-left: 3px solid #3b82f6;
+}
+
+/* Threats */
+.trustshield-threats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.trustshield-threat-badge {
+  padding: 6px 12px;
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #f87171;
+}
+
+/* Scanned Content */
+.trustshield-scanned-content {
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  margin-top: 16px;
+}
+
+.trustshield-scanned-label {
+  display: block;
+  font-size: 10px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.trustshield-scanned-content p {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+/* Footer */
+.trustshield-result-footer {
+  padding: 14px 20px;
+  text-align: center;
+  border-top: 1px solid rgba(59, 130, 246, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.trustshield-result-footer span {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* Scrollbar */
+.trustshield-result-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.trustshield-result-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.trustshield-result-content::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 3px;
+}
+
+.trustshield-result-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
+}
+
+/* Image Button */
+.trustshield-img-btn {
+  width: 32px;
+  height: 32px;
+  background: rgba(37, 99, 235, 0.9);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.trustshield-img-btn:hover {
+  background: #2563eb;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
